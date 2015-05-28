@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Cirrus66
 // @namespace    https://github.com/tsdorsey/cirrus66
-// @version      0.1
+// @version      0.1.1
 // @description  Organize the dashboard to be a bit more compact.
 // @author       Trevor Dorsey
 // @match        https://app.cloud66.com/dashboard
+// @grant        none
 // @require      https://code.jquery.com/jquery-2.1.4.js
 // @require      https://code.jquery.com/ui/1.11.4/jquery-ui.js
 // @run-at       document-idle
