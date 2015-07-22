@@ -11,6 +11,7 @@
 // @run-at       document-idle
 // ==/UserScript==
 
+// this.$ = this.jQuery = jQuery.noConflict(true);
 var MutationObserver    = window.MutationObserver || window.WebKitMutationObserver;
 
 waitForListLoad();
@@ -27,7 +28,7 @@ function start() {
   var items = $('#js_search_list > li');
   var list = items.toArray();
 
-  var envOrder = ['c66_development', 'staging', 'production'];
+  var envOrder = ['c66_develop', 'staging', 'production'];
   var stackOrder = ['Accounts', 'Dashboard', 'Greenhouse', 'API', 'Sites', 'CloverSites.com'];
 
   list.forEach(makeSingleColumn);
@@ -38,7 +39,7 @@ function start() {
 function bindUpdate(itemList) {
   // create an observer instance
   var observer = new MutationObserver (mutationHandler);
-  var config = { childList: true };
+  var config = { childList: true, subtree: true };
 
   itemList.forEach(function(item) {
     observer.observe(item, config);
@@ -47,7 +48,6 @@ function bindUpdate(itemList) {
 }
 
 function mutationHandler(mutationRecords) {
-  console.info('mutationHandler');
   mutationRecords.forEach(function(record) { 
     updateStack(record.target);
   });
@@ -157,5 +157,5 @@ function envAndName(item) {
   $link = $(item).find('.Module-titleLink');
   $env = $link.find('.Module-titleSub');
   $stack = $link.find('.js-stack-name');
-  return { 'name': $stack.html(), 'env': $env.html() };
+  return { 'name': $stack.html().trim(), 'env': $env.html().trim() };
 }
