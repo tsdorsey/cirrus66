@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cirrus66
 // @namespace    https://github.com/tsdorsey/cirrus66
-// @version      0.2.0
+// @version      0.2.1
 // @description  Organize the dashboard to be a bit more compact.
 // @author       Trevor Dorsey
 // @match        https://app.cloud66.com/dashboard
@@ -52,7 +52,7 @@ function mutationHandler(mutationRecords) {
 }
 
 function updateStack(item) {
-  $item = $(item);
+  var $item = $(item);
 
   if($item.hasClass('cirrus--update')) { return; }
 
@@ -64,12 +64,12 @@ function updateStack(item) {
 }
 
 function makeSingleColumn(listItem) {
-  $item = $(listItem);
+  var $item = $(listItem);
   $item.removeClass('desk--one-half');
 }
 
 function compressSpace(listItem) {
-  $item = $(listItem);
+  var $item = $(listItem);
   $item.find('.Module-header').css( { 'padding-top': '4px', 'padding-bottom': '4px' } );
   $item.find('.Module-headerTools').css( { 'top': '2px' } );
   $item.find('.Module-body').css( { 'height': 'auto', 'padding-top': '0', 'padding-bottom': '3px' } );
@@ -80,24 +80,24 @@ function compressSpace(listItem) {
 }
 
 function hideFooter(listItem) {
-  $item = $(listItem);
+  var $item = $(listItem);
   $item.find('footer.Module-footer').css( { 'display': 'none' } );
 }
 
 function environmentFirst(listItem) {
-  $item = $(listItem);
-  $link = $item.find('.Module-titleLink');
-  $env = $link.find('.Module-titleSub');
+  var $item = $(listItem);
+  var $link = $item.find('.Module-titleLink');
+  var $env = $link.find('.Module-titleSub');
   $env.detach();
   $link.prepend($env);
 }
 
 function sortByEnvironment(list, envOrder, stackOrder, endingPad) {
   list.sort(function(a, b) {
-    Da = envAndName(a);
-    Db = envAndName(b);
+    var Da = envAndName(a);
+    var Db = envAndName(b);
 
-    envOrderResult = order(Da.env, Db.env, envOrder);
+    var envOrderResult = order(Da.env, Db.env, envOrder);
     if(envOrderResult != 0) { return envOrderResult; }
 
     return order(Da.name, Db.name, stackOrder);
@@ -105,20 +105,20 @@ function sortByEnvironment(list, envOrder, stackOrder, endingPad) {
 
   // Put them in the new order by detaching them and appending them in order.
   list.forEach(function(listItem) {
-    $item = $(listItem);
+    var $item = $(listItem);
     $item.detach();
   });
 
-  parentContainer = $('#js_search_list');
+  var parentContainer = $('#js_search_list');
   parentContainer.empty();
 
-  last = envAndName(list[0]);
+  var last = envAndName(list[0]);
   list.forEach(function(listItem) {
-    $item = $(listItem);
+    var $item = $(listItem);
     parentContainer.append($item);
     parentContainer.append("<!--\n-->");
 
-    now = envAndName($item);
+    var now = envAndName($item);
     if(now.env != last.env) {
       $item.css( { 'margin-top': endingPad } );
     }
@@ -128,8 +128,8 @@ function sortByEnvironment(list, envOrder, stackOrder, endingPad) {
 }
 
 function order(a, b, list) {
-  A = list.indexOf(a);
-  B = list.indexOf(b);
+  var A = list.indexOf(a);
+  var B = list.indexOf(b);
 
   if(A == B) { 
     if(A == -1) {
@@ -147,13 +147,14 @@ function order(a, b, list) {
   if(A == -1) { return 1; }
   if(B == -1) { return -1; }
 
+  // Compare their position in the list.
   if(A < B) { return -1; }
   if(A > B) { return 1; }
 }
 
 function envAndName(item) {
-  $link = $(item).find('.Module-titleLink');
-  $env = $link.find('.Module-titleSub');
-  $stack = $link.find('.js-stack-name');
+  var $link = $(item).find('.Module-titleLink');
+  var $env = $link.find('.Module-titleSub');
+  var $stack = $link.find('.js-stack-name');
   return { 'name': $stack.html().trim(), 'env': $env.html().trim() };
 }
