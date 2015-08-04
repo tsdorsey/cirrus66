@@ -13,8 +13,6 @@
 
 var MutationObserver    = window.MutationObserver || window.WebKitMutationObserver;
 
-waitForListLoad();
-
 function waitForListLoad() {
   if($('#js_search_list').length > 0) {
     start();
@@ -22,6 +20,7 @@ function waitForListLoad() {
     setTimeout(waitForListLoad, 250);
   }
 }
+waitForListLoad();
 
 function start() {
   var items = $('#js_search_list > li');
