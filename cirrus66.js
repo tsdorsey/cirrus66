@@ -11,7 +11,6 @@
 // @run-at       document-idle
 // ==/UserScript==
 
-// this.$ = this.jQuery = jQuery.noConflict(true);
 var MutationObserver    = window.MutationObserver || window.WebKitMutationObserver;
 
 waitForListLoad();
